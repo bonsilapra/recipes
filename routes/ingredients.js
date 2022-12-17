@@ -3,13 +3,7 @@ const router = express.Router();
 const knexConnection = require('../db-connection.js')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    const result = knexConnection('recipe')
-        .whereILike('name', `${req.query.query}%`)
-        .union(function() {
-            this.select('*')
-                .from('recipe')
-                .whereILike('name', `%${req.query.query}%`)
-            })
+    const result = knexConnection.select().from('ingredient')
         .then(
             data => res.json(data)
         )
