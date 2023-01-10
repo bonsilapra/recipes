@@ -16,9 +16,14 @@ router.get('/', function(req, res, next) {
 		);
 });
 
-router.get('/search', function(req, res, next) {
+router.get('/search', async function(req, res, next) {
 	if (req.query.text) {
-		textQuery(req.query.text, res);
+		try {
+			const result = await textQuery(req.query.text);
+			res.json(result);
+		} catch (error) {
+			res.status(500).send(error.message);
+		}
 	}
 });
 

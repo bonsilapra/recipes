@@ -1,7 +1,7 @@
 const knexConnection = require('../db-connection.js');
 
-function textQuery(text, res) {
-	knexConnection('recipe')
+async function textQuery(text) {
+	return await knexConnection('recipe')
 		.whereILike('name', `%${text}%`).orderBy('name')
 		.then(
 			data => {
@@ -11,14 +11,14 @@ function textQuery(text, res) {
 
 					return resultA - resultB;
 				});
-				res.json(data);
+
+				return data;
 			}
 		)
 		.catch(
 			error => {
 				console.log('error', error);
-
-				res.status(500).send('Something went wrong!');
+				throw new Error('Something went wrong!');
 			}
 		);
 }
